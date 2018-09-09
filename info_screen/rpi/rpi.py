@@ -28,6 +28,8 @@ class Rpi(object):
         pygame.init()
         self._display_surf = pygame.display.set_mode((MATRIX_WIDTH, MATRIX_HEIGHT))
         pygame.display.set_caption("Info Screen")
+
+        pygame.mouse.set_visible(False)
         self.clock = pygame.time.Clock()
 
         self.running = True
