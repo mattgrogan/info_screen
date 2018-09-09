@@ -43,6 +43,9 @@ class Rpi(object):
                 ## listening for the the X button at the top
                 if event.type == pygame.QUIT:
                     self.running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        self.running = False
 
             im = self.image_conn.receive()
             if im is not None:
