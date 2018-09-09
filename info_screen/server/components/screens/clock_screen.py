@@ -82,7 +82,7 @@ class ClockScreen(Screen):
 
         ### Render the time
         
-        txt = TextLayer(self._time(), "Open 24 Display St", 100)
+        txt = TextLayer(self._time(), "Open 24 Display St", 300)
         im = txt.render()
 
         # Calculate position of text
