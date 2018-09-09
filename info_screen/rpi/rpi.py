@@ -48,7 +48,7 @@ class Rpi(object):
 
     def display(self, im):
         
-        raw_str = im.tostring()
+        raw_str = im.tobytes()
         s = pygame.image.fromstring(raw_str, (MATRIX_WIDTH, MATRIX_HEIGHT), 'RGB')
 
         
