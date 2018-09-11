@@ -78,11 +78,11 @@ class ClockScreen(Screen):
     def render(self):
 
         # Create a blank background
-        bg = Image.new("RGBA", self.device.size)
+        bg = Image.new("RGBA", self.device.size, "#2e3440")
 
         ### Render the time
         
-        txt = TextLayer(self._time(), "Open 24 Display St", 300)
+        txt = TextLayer(self._time(), "digital display tfb", 200, "#d8dee9")
         im = txt.render()
 
         # Calculate position of text
@@ -91,6 +91,16 @@ class ClockScreen(Screen):
 
         # Paste the text on the background
         bg.paste(im, box=(x, y), mask=im)
+
+        ampm = TextLayer(time.strftime("%p", time.localtime()), "digital display tfb", 100, "#d8dee9")
+        w, h = im.size
+
+        ampm_im = ampm.render()
+        
+        x += w + 10
+        y = y + h - ampm_im.size[1]
+        
+        bg.paste(ampm_im, box=(x, y), mask=ampm_im)
 
         ### Render the icon
         #icon_im = self.icon.render()
