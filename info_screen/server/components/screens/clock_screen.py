@@ -102,21 +102,24 @@ class ClockScreen(Screen):
         
         bg.paste(ampm_im, box=(x, y), mask=ampm_im)
 
+
+
         ### Render the icon
         #icon_im = self.icon.render()
         #bg.paste(icon_im, box=(0,0), mask=icon_im)
 
-        # ### Render the temperature
-        # try:
-        #     temp_str = "%iF" % int(float(self.current_obs["temp_f"]))
-        # except ValueError:
-        #     temp_str = "--F"
+        ### Render the temperature
+        try:
+            temp_str = "%iF %s" % (int(float(self.current_obs["temp_f"])), self._weather())
+        except ValueError:
+            temp_str = "Temperature not available"
 
-        # temp = TextLayer(temp_str)
-        # temp_im = temp.render()
-        # x = 4
-        # y = im.size[1] + 2 # Offset by two rows
-        # bg.paste(temp_im, box=(x, y), mask=temp_im)
+        temp = TextLayer(temp_str, "OpenSans-Regular", 30, "#8fbcbb")
+        temp_im = temp.render()
+
+        x = 10
+        y = 20 + h
+        bg.paste(temp_im, box=(x, y), mask=temp_im)
 
         # ### Render the conditions
         # if self._weather_changed():
