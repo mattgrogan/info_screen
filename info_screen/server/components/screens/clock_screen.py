@@ -23,15 +23,15 @@ class ClockScreen(Screen):
         self.current_obs = NOAA_Current_Observation(STATION)
 
         # Load the font
-        self.vl_font = FontFactory().by_name( "enhanced_led_board-7", 80)
-        self.lg_font = FontFactory().by_name( "enhanced_led_board-7", 48)
-        self.md_font = FontFactory().by_name( "enhanced_led_board-7", 32)
+        self.vl_font = FontFactory().by_name( "enhanced_led_board-7", 120)
+        self.lg_font = FontFactory().by_name( "enhanced_led_board-7", 80)
+        self.md_font = FontFactory().by_name( "enhanced_led_board-7", 48)
         self.sm_font = FontFactory().by_name( "enhanced_led_board-7", 24)
         self.vs_font = FontFactory().by_name( "enhanced_led_board-7", 16)
 
-        self.lg_icons = FontFactory().by_name( "weathericons-regular-webfont", 32)
-        self.md_icons = FontFactory().by_name( "weathericons-regular-webfont", 24)
-        self.sm_icons = FontFactory().by_name( "weathericons-regular-webfont", 16)
+        self.lg_icons = FontFactory().by_name( "weathericons-regular-webfont", 120)
+        self.md_icons = FontFactory().by_name( "weathericons-regular-webfont", 32)
+        self.sm_icons = FontFactory().by_name( "weathericons-regular-webfont", 24)
 
         # Create colors
         self.green = "#a1d99b"
@@ -56,35 +56,39 @@ class ClockScreen(Screen):
 
         # Outside conditions
 
+        self.outside_conditions = TextLayer(self.vs_font, self.outside_color, lambda: "OUTSIDE CONDITIONS")
+        self.outside_conditions.padding = (10, 20, 0, 0)
+        self.outside_conditions.top_items = [self.time_text, self.date_text]
+
         self.weather_icon = TextLayer(self.lg_icons, self.outside_color, self._weather_icon)
         self.weather_icon.padding = (10, 10, 0, 0)
-        self.weather_icon.top_items = [self.time_text, self.date_text]
+        self.weather_icon.top_items = [self.time_text, self.date_text, self.outside_conditions]
 
         self.temp = TextLayer(self.md_font, self.outside_color, self._temp)
-        self.temp.padding = (10, 10, 0, 0)
-        self.temp.top_items = [self.time_text, self.date_text]
+        self.temp.padding = (10, 30, 0, 0)
+        self.temp.top_items = [self.time_text, self.date_text, self.outside_conditions]
         self.temp.left_items = [self.weather_icon]
 
         self.temp_icon = TextLayer(self.md_icons, self.outside_color, lambda: u"\uF045")
-        self.temp_icon.padding = (5, 10, 0, 0)
-        self.temp_icon.top_items = [self.time_text, self.date_text]
+        self.temp_icon.padding = (5, 30, 0, 0)
+        self.temp_icon.top_items = [self.time_text, self.date_text, self.outside_conditions]
         self.temp_icon.left_items = [self.weather_icon, self.temp]
 
         self.rh = TextLayer(self.md_font, self.outside_color, self._rh)
-        self.rh.padding = (10, 10, 0, 0)
-        self.rh.top_items =[self.time_text, self.date_text]
+        self.rh.padding = (10, 30, 0, 0)
+        self.rh.top_items =[self.time_text, self.date_text, self.outside_conditions]
         self.rh.left_items = [self.weather_icon, self.temp, self.temp_icon]
 
         self.rh_icon = TextLayer(self.sm_icons, self.outside_color, lambda: u"\uF07A")
-        self.rh_icon.padding = (5, 10, 0, 0)
-        self.rh_icon.top_items = [self.time_text, self.date_text]
+        self.rh_icon.padding = (5, 30, 0, 0)
+        self.rh_icon.top_items = [self.time_text, self.date_text, self.outside_conditions]
         self.rh_icon.left_items = [self.weather_icon, self.temp, self.temp_icon, self.rh]
 
         # Weather text
 
         self.weather = TextLayer(self.vs_font, self.outside_color, self._weather)
         self.weather.padding = (10, 5, 0, 0)
-        self.weather.top_items = [self.time_text, self.date_text, self.weather_icon]
+        self.weather.top_items = [self.time_text, self.date_text, self.weather_icon, self.outside_conditions]
 
     def enter(self):
         pass
@@ -103,6 +107,7 @@ class ClockScreen(Screen):
         self.am_pm.step()
         self.date_text.step()
 
+        self.outside_conditions.step()
         self.weather_icon.step()
         self.temp.step()
         self.temp_icon.step()
@@ -153,6 +158,7 @@ class ClockScreen(Screen):
         self.am_pm.render(bg)
         self.date_text.render(bg)
 
+        self.outside_conditions.render(bg)
         self.weather_icon.render(bg)
         self.temp.render(bg)
         self.temp_icon.render(bg)
