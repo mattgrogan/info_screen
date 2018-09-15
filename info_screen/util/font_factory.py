@@ -1,10 +1,15 @@
-import pygame, pygame.font
+import pygame, pygame.freetype
 
 class FontFactory(object):
+    
+    def __init__(self):
+        pygame.freetype.init()
+
 
     def from_file(self, filename, size):
 
-        font = pygame.font.Font(filename, size)
+        pygame.freetype.init()
+        font = pygame.freetype.Font(filename, size)
 
         return font
 
@@ -31,7 +36,7 @@ class FontFactory(object):
         return font
 
     def by_name(self, name, size):
-        font = pygame.font.Font("fonts/" + name + ".ttf", size)
+        font = pygame.freetype.Font("fonts/" + name + ".ttf", size)
         return font
 
 

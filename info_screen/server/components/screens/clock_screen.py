@@ -1,6 +1,8 @@
 import time
 from PIL import Image
 
+from util.font_factory import FontFactory
+
 from server.components.screens.screen import Screen
 from server.components.layers.text_layer import TextLayer
 from server.components.layers.scrolling_layer import ScrollingLayer
@@ -20,115 +22,104 @@ class ClockScreen(Screen):
         # Create a connection to the NOAA website 
         self.current_obs = NOAA_Current_Observation(STATION)
 
-        # Create the weather layer
-        self._create_weather_layer()
+        # Load the font
+        self.vl_font = FontFactory().by_name( "enhanced_led_board-7", 80)
+        self.lg_font = FontFactory().by_name( "enhanced_led_board-7", 48)
+        self.md_font = FontFactory().by_name( "enhanced_led_board-7", 32)
+        self.sm_font = FontFactory().by_name( "enhanced_led_board-7", 24)
+        self.vs_font = FontFactory().by_name( "enhanced_led_board-7", 16)
 
-        # Cache the current weather
-        self._prev_weather = self._weather()
+        self.weather_icons = FontFactory().by_name( "weathericons-regular-webfont", 24)
+
+        # Create colors
+        self.green = "#a1d99b"
+        self.red = "#fc9272"
+        self.blue = "#9ecae1"
+
+        self.time_color = self.green
+        self.outside_color = self.blue
+
+        self.time_text = TextLayer(self.vl_font, self.time_color, lambda: time.strftime("%I:%M", time.localtime()).lstrip("0"))
+        self.time_text.padding = (10, 10, 0, 0)
+
+        self.am_pm = TextLayer(self.md_font, self.time_color, lambda: time.strftime("%p", time.localtime()))
+        self.am_pm.padding = (10, 10, 0, 0)
+        self.am_pm.left_items = [self.time_text]
+
+        self.date_text = TextLayer(self.vs_font, self.time_color, lambda: time.strftime("%A %B ") + time.strftime("%d").lstrip("0"))
+        self.date_text.padding = (10, 5, 0, 0)
+        self.date_text.top_items = [self.time_text]
+
+        self.temp = TextLayer(self.md_font, self.outside_color, self._temp)
+        self.temp.padding = (10, 10, 0, 0)
+        self.temp.top_items = [self.time_text, self.date_text]
+
+        self.temp_icon = TextLayer(self.weather_icons, self.outside_color, lambda: u"\uF045")
+        self.temp_icon.padding = (5, 10, 0, 0)
+        self.temp_icon.top_items = [self.time_text, self.date_text]
+        self.temp_icon.left_items = [self.temp]
+
+        self.rh = TextLayer(self.md_font, self.outside_color, self._rh)
+        self.rh.padding = (10, 10, 0, 0)
+        self.rh.top_items =[self.time_text, self.date_text]
+        self.rh.left_items = [self.temp, self.temp_icon]
+
+        self.rh_icon = TextLayer(self.weather_icons, self.outside_color, lambda: u"\uF07A")
+        self.rh_icon.padding = (5, 10, 0, 0)
+        self.rh_icon.top_items = [self.time_text, self.date_text]
+        self.rh_icon.left_items = [self.temp, self.temp_icon, self.rh]
+
 
     def enter(self):
-        #self.icon.enter()
-        #self.conditions_layer.enter()
         pass
 
     def exit(self):
         pass
 
     def suspend(self):
-        #self.icon.suspend()
-        #self.conditions_layer.suspend()
         pass
 
     def resume(self):
-        #self.icon.resume()
-        #self.conditions_layer.resume()
         pass
 
     def step(self):
-        #self.icon.step()
-        #self.conditions_layer.step()
-        pass
+        self.time_text.step()
+        self.am_pm.step()
+        self.date_text.step()
+        self.temp.step()
+        self.temp_icon.step()
+        self.rh.step()
+        self.rh_icon.step()
 
-    def _create_weather_layer(self):
-        # Add the weather layer
-        #self.conditions_layer = ScrollingLayer(self.device, TextLayer(self._weather()), xspeed=10)
-        pass
-
-    def _time(self):
-        # Return the formatted time
-        return time.strftime("%I:%M", time.localtime()).lstrip("0")
-
-    def _weather_changed(self):
-        # Did the weather change?
-
-        if self._weather() != self._prev_weather:
-            self._prev_weather = self._weather()
-            return True
-        else:
-            return False
-
-    def _weather(self):
-        # Return the current weather conditions
+    def _temp(self):
         try:
-            retval = self.current_obs["weather"]
+            temp_str = "%i" % int(float(self.current_obs["temp_f"]))
         except ValueError:
-            retval = "Weather unavailable."
-        return retval
+            temp_str = "NA"
+
+        return temp_str
+
+    def _rh(self):
+        try:
+            rh_str = "%i" % int(float(self.current_obs["relative_humidity"]))
+        except ValueError:
+            rh_str = "NA"
+
+        return rh_str
 
     def render(self):
-
+        
         # Create a blank background
-        bg = Image.new("RGBA", self.device.size, "#2e3440")
+        bg = Image.new("RGBA", self.device.size, "#000000")
 
-        ### Render the time
-        
-        txt = TextLayer(self._time(), "digital display tfb", 200, "#d8dee9")
-        im = txt.render()
+        self.time_text.render(bg)
+        self.am_pm.render(bg)
+        self.date_text.render(bg)
 
-        # Calculate position of text
-        x = 10
-        y = 10
-
-        # Paste the text on the background
-        bg.paste(im, box=(x, y), mask=im)
-
-        ampm = TextLayer(time.strftime("%p", time.localtime()), "digital display tfb", 100, "#d8dee9")
-        w, h = im.size
-
-        ampm_im = ampm.render()
-        
-        x += w + 10
-        y = y + h - ampm_im.size[1]
-        
-        bg.paste(ampm_im, box=(x, y), mask=ampm_im)
-
-
-
-        ### Render the icon
-        #icon_im = self.icon.render()
-        #bg.paste(icon_im, box=(0,0), mask=icon_im)
-
-        ### Render the temperature
-        try:
-            temp_str = "%iF %s" % (int(float(self.current_obs["temp_f"])), self._weather())
-        except ValueError:
-            temp_str = "Temperature not available"
-
-        temp = TextLayer(temp_str, "OpenSans-Regular", 30, "#8fbcbb")
-        temp_im = temp.render()
-
-        x = 10
-        y = 20 + h
-        bg.paste(temp_im, box=(x, y), mask=temp_im)
-
-        # ### Render the conditions
-        # if self._weather_changed():
-        #     self._create_weather_layer
-
-        # cond_im = self.conditions_layer.render()
-        # x = 0
-        # y = im.size[1] * 2 + 4
-        # bg.paste(cond_im, box=(x, y), mask=cond_im)
+        self.temp.render(bg)
+        self.temp_icon.render(bg)
+        self.rh.render(bg)
+        self.rh_icon.render(bg)
 
         return bg
 

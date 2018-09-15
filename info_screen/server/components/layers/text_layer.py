@@ -1,20 +1,57 @@
 from PIL import Image
-import pygame, pygame.font
+import pygame
 
-from util.font_factory import FontFactory
 from server.components.layers.screen_layer import ScreenLayer
 
 class TextLayer(ScreenLayer):
 
-    def __init__(self, text, font_name, font_size, color="#FFFFFF"):
-        self.text = text
+    def __init__(self, font, color, callback, padding=(0, 0, 0, 0)):
+        # padding is left, top, right, bottom
+        self.font = font
         self.color = color
+        self.callback = callback
+        self.padding = padding
 
-        pygame.font.init()
+        self.text = ()
+        self.left_items = [] # Which items appear left of this item
+        self.top_items = []  # Which items appear above this item
+        self.needs_render = False
+        self.im = None
 
-        self.font = FontFactory().by_name(font_name, font_size)
+    @property
+    def size(self):
+        if self.im is None:
+            w = 0
+            h = 0
+        else:
+            w, h = self.im.size
+
+        left, top, right, bottom = self.padding
+        return (left + w + right, top + h + bottom)
+
+    @property
+    def x(self):
+        left, top, right, bottom = self.padding
+        return left
+
+    @property
+    def y(self):
+        left, top, right, bottom = self.padding
+        return top
+
+    @property
+    def w(self):
+        w, h = self.size
+        return w
+    
+    @property
+    def h(self):
+        w, h = self.size
+        return h
+
     def enter(self):
-        pass
+        self.text = self.callback()
+        self.needs_render = True
 
     def exit(self):
         pass
@@ -26,16 +63,34 @@ class TextLayer(ScreenLayer):
         pass
 
     def step(self):
-        pass
+        next_text = self.callback()
 
-    def render(self):
+        if self.text != next_text:
+            self.text = next_text
+            self.needs_render = True
 
-        text = self.font.render(self.text, False, pygame.Color(self.color))
+    def render(self, bg):
+        
+        if self.needs_render:
+            text, r = self.font.render(self.text, pygame.Color(self.color))
+        
+            # Convert to PIL image for display
+            img_str = pygame.image.tostring(text, "RGBA")
+            im = Image.frombytes("RGBA", text.get_size(), img_str)
 
-        cropped_text = text.subsurface(text.get_bounding_rect())
-  
-        # Convert to PIL image for display
-        img_str = pygame.image.tostring(cropped_text, "RGBA")
-        im = Image.frombytes("RGBA", cropped_text.get_size(), img_str)
+            self.im = im
+            self.needs_render = False
 
-        return im
+        x = self.x
+        y = self.y
+
+        for item in self.left_items:
+            x += item.w
+
+        for item in self.top_items:
+            y += item.h
+
+        bg.paste(self.im, box=(x, y), mask=self.im)
+
+        return bg
+
