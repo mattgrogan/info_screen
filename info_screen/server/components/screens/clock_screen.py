@@ -9,8 +9,10 @@ from server.components.layers.scrolling_layer import ScrollingLayer
 from server.components.screens.gif_screen_factory import GifScreenFactory
 
 from server.data.current_conditions import NOAA_Current_Observation, IconDecoder
+from server.data.showerthoughts import ShowerThoughts
 
 STATION = "KFRG"
+ST_INTERVAL = 60 * 10 # every 10 minutes
 
 class ClockScreen(Screen):
 
@@ -22,12 +24,17 @@ class ClockScreen(Screen):
         # Create a connection to the NOAA website 
         self.current_obs = NOAA_Current_Observation(STATION)
 
+        # Create a showerthoughts connection
+        self.showerthoughts = ShowerThoughts()
+        self.last_showerthoughts = None
+
         # Load the font
         self.vl_font = FontFactory().by_name( "enhanced_led_board-7", 120)
         self.lg_font = FontFactory().by_name( "enhanced_led_board-7", 80)
         self.md_font = FontFactory().by_name( "enhanced_led_board-7", 48)
         self.sm_font = FontFactory().by_name( "enhanced_led_board-7", 24)
         self.vs_font = FontFactory().by_name( "enhanced_led_board-7", 16)
+        self.ty_font = FontFactory().by_name( "enhanced_led_board-7", 8)
 
         self.lg_icons = FontFactory().by_name( "weathericons-regular-webfont", 120)
         self.md_icons = FontFactory().by_name( "weathericons-regular-webfont", 32)
@@ -40,6 +47,7 @@ class ClockScreen(Screen):
 
         self.time_color = self.green
         self.outside_color = self.blue
+        self.st_color = self.red
 
         # Time and Date
 
@@ -90,6 +98,15 @@ class ClockScreen(Screen):
         self.weather.padding = (10, 5, 0, 0)
         self.weather.top_items = [self.time_text, self.date_text, self.weather_icon, self.outside_conditions]
 
+        # Showerthoughts
+
+        self.st = TextLayer(self.ty_font, self.st_color, self.showerthoughts.random)
+        self.st.padding = (10, 20, 0, 0)
+        self.st.top_items = self.weather.top_items + [self.weather]
+
+        self.st.step()
+        self.last_showerthoughts = time.time()
+
     def enter(self):
         pass
 
@@ -114,6 +131,10 @@ class ClockScreen(Screen):
         self.rh.step()
         self.rh_icon.step()
         self.weather.step()
+
+        if time.time() > self.last_showerthoughts + ST_INTERVAL:
+            self.st.step()
+            self.last_showerthoughts = time.time()
 
     def _temp(self):
         try:
@@ -165,6 +186,8 @@ class ClockScreen(Screen):
         self.rh.render(bg)
         self.rh_icon.render(bg)
         self.weather.render(bg)
+
+        self.st.render(bg)
 
         return bg
 
