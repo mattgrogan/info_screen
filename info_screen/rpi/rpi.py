@@ -48,7 +48,7 @@ class Rpi(object):
                         self.running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     pos = event.pos
-                    print "DETECTED AT " + pos
+                    print "DETECTED AT %i, %i" % pos
                     pygame.draw.circle(self._display_surf, (0, 0, 255), pos, 20)
                     pygame.display.update()
                 else:
