@@ -55,6 +55,7 @@ class Rpi(object):
             for touch in self.ts.poll():
                 print(touch.slot, touch.id, touch.valid, touch.x, touch.y)
                 pygame.draw.circle(self._display_surf, (0, 0, 255), (touch.x, touch.y), 5)
+                pygame.display.update()
 
                 # elif event.type == pygame.MOUSEBUTTONDOWN:
                 #     pos = event.pos
