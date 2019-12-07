@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from __future__ import print_function
 
 import time
 import pygame
@@ -48,16 +49,16 @@ class Rpi(object):
                         self.running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     pos = event.pos
-                    print "DETECTED AT %i, %i" % pos
+                    print("DETECTED AT %i, %i" % pos)
                     pygame.draw.circle(self._display_surf, (0, 0, 255), pos, 5)
                     pygame.display.update()
                 elif event.type == pygame.MOUSEBUTTONUP:
                     pos = event.pos
-                    print "DETECTED AT %i, %i" % pos
+                    print("DETECTED AT %i, %i" % pos)
                     pygame.draw.circle(self._display_surf, (0, 255, 0), pos, 5)
                     pygame.display.update()
                 else:
-                    print event
+                    print(event)
 
             im = self.image_conn.receive()
             if im is not None:

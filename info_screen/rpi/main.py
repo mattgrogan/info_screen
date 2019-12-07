@@ -1,4 +1,5 @@
-from rpi import Rpi
+from __future__ import absolute_import
+from .rpi import Rpi
 
 def main():
 
