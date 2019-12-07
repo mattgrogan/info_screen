@@ -52,7 +52,7 @@ class Rpi(object):
                     if event.key == K_ESCAPE:
                         self.running = False
 
-            for touch in ts.poll():
+            for touch in self.ts.poll():
                 print(touch.slot, touch.id, touch.valid, touch.x, touch.y)
                 pygame.draw.circle(self._display_surf, (0, 0, 255), (touch.x, touch.y), 5)
 
