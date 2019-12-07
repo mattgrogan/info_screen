@@ -2,7 +2,9 @@
 The ImageConnection allows clients to send images between processes.
 """
 from __future__ import absolute_import
+from __future__ import print_function
 
+from builtins import object
 import zmq
 from PIL import Image
 
@@ -68,7 +70,7 @@ class ImageConnection(object):
         try:
             self.socket.send(IMAGE_TOPIC + im.tobytes())
         except zmq.ZMQError:
-            print "Unable to send image on %s" % self.addr
+            print("Unable to send image on %s" % self.addr)
 
 def main():
 
@@ -85,7 +87,7 @@ def main():
     if args.r:
         conn.connect("*", PORT, as_receiver=True)
 
-        print "Connected. Ready to receive image..."
+        print("Connected. Ready to receive image...")
 
         while True:
             im = conn.receive()
