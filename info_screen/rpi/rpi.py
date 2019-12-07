@@ -46,7 +46,7 @@ class Rpi(object):
                 elif event.type == pygame.KEYDOWN:
                     if event.key == K_ESCAPE:
                         self.running = False
-                else
+                else:
                     print event
 
             im = self.image_conn.receive()
