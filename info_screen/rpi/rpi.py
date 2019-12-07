@@ -46,12 +46,17 @@ class Rpi(object):
                 elif event.type == pygame.KEYDOWN:
                     if event.key == K_ESCAPE:
                         self.running = False
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = event.pos
+                    pygame.draw.rect(self._display_surf, (0, 0, 255), pos[0]-25, pos[1], 50, 250)
+                    pygame.display.update()
                 else:
                     print event
 
             im = self.image_conn.receive()
             if im is not None:
-                self.display(im)
+                # self.display(im)
+                pass
 
     def display(self, im):
         
