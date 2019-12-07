@@ -5,6 +5,7 @@ from builtins import object
 import time
 import pygame
 from pygame.locals import *
+import ft5406
 
 from messaging.command_connection import CommandConnection
 from messaging.image_connection import ImageConnection
@@ -34,6 +35,8 @@ class Rpi(object):
         #pygame.mouse.set_visible(False)
         self.clock = pygame.time.Clock()
 
+        self.ts = ft5406.Touchscreen()
+
         self.running = True
 
     def mainloop(self):
@@ -48,18 +51,23 @@ class Rpi(object):
                 elif event.type == pygame.KEYDOWN:
                     if event.key == K_ESCAPE:
                         self.running = False
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    pos = event.pos
-                    print("DETECTED AT %i, %i" % pos)
-                    pygame.draw.circle(self._display_surf, (0, 0, 255), pos, 5)
-                    pygame.display.update()
-                elif event.type == pygame.MOUSEBUTTONUP:
-                    pos = event.pos
-                    print("DETECTED AT %i, %i" % pos)
-                    pygame.draw.circle(self._display_surf, (0, 255, 0), pos, 5)
-                    pygame.display.update()
-                else:
-                    print(event)
+
+            for touch in ts.poll():
+                print(touch.slot, touch.id, touch.valid, touch.x, touch.y)
+                pygame.draw.circle(self._display_surf, (0, 0, 255), (touch.x, touch.y), 5)
+
+                # elif event.type == pygame.MOUSEBUTTONDOWN:
+                #     pos = event.pos
+                #     print("DETECTED AT %i, %i" % pos)
+                #     pygame.draw.circle(self._display_surf, (0, 0, 255), pos, 5)
+                #     pygame.display.update()
+                # elif event.type == pygame.MOUSEBUTTONUP:
+                #     pos = event.pos
+                #     print("DETECTED AT %i, %i" % pos)
+                #     pygame.draw.circle(self._display_surf, (0, 255, 0), pos, 5)
+                #     pygame.display.update()
+                # else:
+                #     print(event)
 
             im = self.image_conn.receive()
             if im is not None:
