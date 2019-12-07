@@ -2,7 +2,9 @@
 The CommandConnection allows clients to send commands between processes.
 """
 from __future__ import absolute_import
+from __future__ import print_function
 
+from builtins import object
 import zmq
 
 HOST = "localhost"
@@ -54,7 +56,7 @@ class CommandConnection(object):
         try:
             self.socket.send(cmd)
         except zmq.ZMQError:
-            print "Unable to send message on %s" % self.addr
+            print("Unable to send message on %s" % self.addr)
 
     def send_enter(self):
         self.send("KEY_ENTER")
@@ -98,7 +100,7 @@ def main():
             cmd = conn.receive()
 
             if cmd is not None:
-                print cmd
+                print(cmd)
 
             time.sleep(1)
 
