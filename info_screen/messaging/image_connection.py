@@ -16,7 +16,7 @@ IMAGE_SIZE = (800, 480)
 
 TIMEOUT = 1
 
-IMAGE_TOPIC = "IMG"
+IMAGE_TOPIC = b"IMG"
 
 class ImageConnection(object):
 
