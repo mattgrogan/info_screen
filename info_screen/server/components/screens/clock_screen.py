@@ -201,8 +201,8 @@ class ClockScreen(Screen):
         cmd2 = cmd.split(";")
 
         if cmd2[0] == "TOUCH":
-            x = cmd2[1]
-            y = cmd2[2]
+            x = int(cmd2[1])
+            y = int(cmd2[2])
 
             print "Touch at %i, %i" % (x, y)
 
