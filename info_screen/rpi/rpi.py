@@ -28,6 +28,10 @@ class Rpi(object):
         self.image_conn = ImageConnection()
         self.image_conn.connect(IMG_HOST, IMG_PORT, as_receiver=True)
 
+        # Set up connection to send commands
+        self.cmd = CommandConnection()
+        self.cmd.connect(CMD_HOST, CMD_PORT, as_receiver=False)
+
         pygame.init()
         self._display_surf = pygame.display.set_mode((MATRIX_WIDTH, MATRIX_HEIGHT))
         pygame.display.set_caption("Info Screen")
@@ -53,9 +57,11 @@ class Rpi(object):
                         self.running = False
 
             for touch in self.ts.poll():
-                print(touch.slot, touch.id, touch.valid, touch.x, touch.y)
-                pygame.draw.circle(self._display_surf, (0, 0, 255), (touch.x, touch.y), 5)
-                pygame.display.update()
+                if touch.valid:
+                    self.cmd.send_touch(touch.x, touch.y)
+                    print(touch.slot, touch.id, touch.valid, touch.x, touch.y)
+                    pygame.draw.circle(self._display_surf, (0, 0, 255), (touch.x, touch.y), 5)
+                    pygame.display.update()
 
                 # elif event.type == pygame.MOUSEBUTTONDOWN:
                 #     pos = event.pos

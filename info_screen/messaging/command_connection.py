@@ -79,6 +79,9 @@ class CommandConnection(object):
     def send_playpause(self):
         self.send("KEY_PLAYPAUSE")
 
+    def send_touch(self, x, y):
+        self.send("TOUCH;%i;%i");
+
 def main():
 
     import argparse
