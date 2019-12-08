@@ -40,6 +40,7 @@ class Rpi(object):
         self.clock = pygame.time.Clock()
 
         self.ts = ft5406.Touchscreen()
+        self.touch_id = -1
 
         self.running = True
 
@@ -58,10 +59,12 @@ class Rpi(object):
 
             for touch in self.ts.poll():
                 if touch.valid:
-                    self.cmd.send_touch(touch.x, touch.y)
-                    print(touch.slot, touch.id, touch.valid, touch.x, touch.y)
-                    pygame.draw.circle(self._display_surf, (0, 0, 255), (touch.x, touch.y), 5)
-                    pygame.display.update()
+                    if self.touch_id != touch.id: # we ignore multiple coords for the same touch event
+                        self.cmd.send_touch(touch.x, touch.y)
+                        self.touch_id = touch.id
+                        print(touch.slot, touch.id, touch.valid, touch.x, touch.y)
+                        pygame.draw.circle(self._display_surf, (0, 0, 255), (touch.x, touch.y), 5)
+                        pygame.display.update()
 
                 # elif event.type == pygame.MOUSEBUTTONDOWN:
                 #     pos = event.pos
