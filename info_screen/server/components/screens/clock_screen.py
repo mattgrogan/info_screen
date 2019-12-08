@@ -107,6 +107,11 @@ class ClockScreen(Screen):
         self.port_jeff.padding = (5, 15, 0, 0)
         self.port_jeff.top_items = [self.time_text, self.date_text, self.outside_conditions, self.weather_icon, self.weather]
 
+        # Restart
+        self.restart = TextLayer(self.vs_font, "#FF0000", lambda: "RESTART")
+        self.restart.padding = (5, 5, 5, 5)
+        self.restart.top_items = [self.time_text, self.date_text, self.outside_conditions, self.weather_icon, self.weather, self.port_jeff]
+
     def enter(self):
         pass
 
@@ -132,6 +137,7 @@ class ClockScreen(Screen):
         self.rh_icon.step()
         self.weather.step()
         self.port_jeff.step()
+        self.restart.step()
 
     def _temp(self):
         try:
@@ -192,6 +198,7 @@ class ClockScreen(Screen):
         self.rh_icon.render(bg)
         self.weather.render(bg)
         self.port_jeff.render(bg)
+        self.restart.render(bg)
 
         return bg
 
@@ -208,4 +215,6 @@ class ClockScreen(Screen):
 
             if self.port_jeff.rect.collidepoint(x, y):
                 print "YOU CLICKED PORT JEFF"
+            if self.restart.rect.collidepoint(x, y):
+                print "YOU CLICKED RESTART"
    
