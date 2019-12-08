@@ -80,7 +80,7 @@ class CommandConnection(object):
         self.send("KEY_PLAYPAUSE")
 
     def send_touch(self, x, y):
-        self.send("TOUCH;%i;%i") % (x, y)
+        self.send("TOUCH;%i;%i" % (x, y))
 
 def main():
 
