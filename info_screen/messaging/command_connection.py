@@ -54,7 +54,7 @@ class CommandConnection(object):
         assert not self.as_receiver
 
         try:
-            self.socket.send(cmd)
+            self.socket.send_string(cmd)
         except zmq.ZMQError:
             print("Unable to send message on %s" % self.addr)
 
