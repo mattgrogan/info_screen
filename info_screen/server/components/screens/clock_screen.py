@@ -1,4 +1,5 @@
 import time
+import os
 from PIL import Image
 
 from util.font_factory import FontFactory
@@ -217,4 +218,5 @@ class ClockScreen(Screen):
                 print "YOU CLICKED PORT JEFF"
             if self.restart.rect.collidepoint(x, y):
                 print "YOU CLICKED RESTART"
+                os.system("sudo reboot")
    
