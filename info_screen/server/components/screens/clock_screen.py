@@ -196,5 +196,6 @@ class ClockScreen(Screen):
         return bg
 
     def handle_input(self, cmd):
+        print "SCREEN: " + cmd
         pass
     
