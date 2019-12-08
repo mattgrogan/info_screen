@@ -63,26 +63,12 @@ class Rpi(object):
                         self.cmd.send_touch(touch.x, touch.y)
                         self.touch_id = touch.id
                         print(touch.slot, touch.id, touch.valid, touch.x, touch.y)
-                        pygame.draw.circle(self._display_surf, (0, 0, 255), (touch.x, touch.y), 5)
-                        pygame.display.update()
-
-                # elif event.type == pygame.MOUSEBUTTONDOWN:
-                #     pos = event.pos
-                #     print("DETECTED AT %i, %i" % pos)
-                #     pygame.draw.circle(self._display_surf, (0, 0, 255), pos, 5)
-                #     pygame.display.update()
-                # elif event.type == pygame.MOUSEBUTTONUP:
-                #     pos = event.pos
-                #     print("DETECTED AT %i, %i" % pos)
-                #     pygame.draw.circle(self._display_surf, (0, 255, 0), pos, 5)
-                #     pygame.display.update()
-                # else:
-                #     print(event)
+                        #pygame.draw.circle(self._display_surf, (0, 0, 255), (touch.x, touch.y), 5)
+                        #pygame.display.update()
 
             im = self.image_conn.receive()
             if im is not None:
-                # self.display(im)
-                pass
+                self.display(im)
 
     def display(self, im):
         

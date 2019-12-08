@@ -17,6 +17,7 @@ class TextLayer(ScreenLayer):
         self.top_items = []  # Which items appear above this item
         self.needs_render = False
         self.im = None
+        self.rect = None
 
     @property
     def size(self):
@@ -89,6 +90,8 @@ class TextLayer(ScreenLayer):
 
         for item in self.top_items:
             y += item.h
+
+        self.rect = pygame.Rect(x, y, self.w, self.h)
 
         bg.paste(self.im, box=(x, y), mask=self.im)
 

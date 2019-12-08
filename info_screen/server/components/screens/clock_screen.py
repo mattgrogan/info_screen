@@ -197,5 +197,15 @@ class ClockScreen(Screen):
 
     def handle_input(self, cmd):
         print "SCREEN: " + cmd
-        pass
-    
+
+        cmd2 = cmd.split(";")
+
+        if cmd2[0] == "TOUCH":
+            x = cmd2[1]
+            y = cmd2[2]
+
+            print "Touch at %i, %i" % (x, y)
+
+            if self.port_jeff.rect.collidepoint(x, y):
+                print "YOU CLICKED PORT JEFF"
+   
