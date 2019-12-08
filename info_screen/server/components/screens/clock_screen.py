@@ -109,7 +109,7 @@ class ClockScreen(Screen):
 
         # Restart
         self.restart = TextLayer(self.vs_font, "#FF0000", lambda: "RESTART")
-        self.restart.padding = (5, 5, 5, 5)
+        self.restart.padding = (10, 10, 10, 10)
         self.restart.top_items = [self.time_text, self.date_text, self.outside_conditions, self.weather_icon, self.weather, self.port_jeff]
 
     def enter(self):
