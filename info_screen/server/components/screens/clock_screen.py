@@ -60,17 +60,13 @@ class ClockScreen(Screen):
         # Time and Date
 
         self.date_text = DateItem()
-        self.date_text.padding = (10, 5, 0, 0)
-        
+        self.date_text.pos = (5, 0)
+
         self.time_text = TimeItem()
-        self.time_text.padding = (10, 10, 0, 0)
-        self.time_text.top_items = [self.date_text]
+        self.time_text.pos = (5, 100)
 
         self.am_pm = AmpmItem()
-        self.am_pm.padding = (10, 10, 0, 0)
-        self.am_pm.top_items = [self.date_text]
-
-        self.am_pm.left_items = [self.time_text]
+        self.am_pm.pos = (5, 40)
 
         self.add_item(self.date_text)
         self.add_item(self.time_text)
@@ -220,6 +216,10 @@ class ClockScreen(Screen):
             y = int(cmd2[2])
 
             print "Touch at %i, %i" % (x, y)
+
+            for item in self._items:
+                if item.rect.collidepoint(x, y):
+                    print type(item)
 
             # if self.port_jeff.rect.collidepoint(x, y):
             #     print "YOU CLICKED PORT JEFF"
