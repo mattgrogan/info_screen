@@ -6,6 +6,7 @@ from server.components.layers.screen_layer import ScreenLayer
 class TextLayer(ScreenLayer):
 
     def __init__(self, font, color, callback):
+        super(TextLayer, self).__init__()
         self.font = font
         self.color = color
         self.callback = callback

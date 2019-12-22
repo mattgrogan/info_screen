@@ -18,5 +18,5 @@ class ScreenLayer(object):
     def step(self):
         raise NotImplementedError
 
-    def render(self):
+    def render(self, bg):
         raise NotImplementedError
