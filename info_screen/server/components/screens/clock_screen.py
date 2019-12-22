@@ -6,9 +6,11 @@ from server.components.screens.screen import Screen
 
 from server.components.items.date_item import DateItem
 from server.components.items.time_item import TimeItem
+from server.components.items.lirr_item import LirrItem
+from server.components.items.temp_item import TempItem
+from server.components.items.title_item import TitleBar
 
 # from server.data.current_conditions import NOAA_Current_Observation, IconDecoder
-# from server.data.mta_status import MTA_Status
 
 # STATION = "KFRG"
 # ST_INTERVAL = 60 * 10 # every 10 minutes
@@ -25,10 +27,6 @@ class ClockScreen(Screen):
         self._items = []
         # # Create a connection to the NOAA website
         # self.current_obs = NOAA_Current_Observation(STATION)
-
-        # # Create a connection to MTA
-        # self.service_status = MTA_Status()
-        # self.line = "Port Jefferson"
 
         # Load the font
         # self.el_font = FontFactory().by_name( "OpenSans-Regular", 160)
@@ -53,15 +51,31 @@ class ClockScreen(Screen):
         # self.st_color = self.red
 
         # Time and Date
+        self.title_bar = TitleBar()
+        self.title_bar.pos = [0, 0, 800, 70]
+        self.add_item(self.title_bar)
 
         self.date_text = DateItem()
-        self.date_text.pos = (5, 0)
+        self.date_text.pos = (20, 15)
+        self.add_item(self.date_text)
 
         self.time_text = TimeItem()
-        self.time_text.pos = (5, 60)
-
-        self.add_item(self.date_text)
+        self.time_text.pos = (20, 100)
         self.add_item(self.time_text)
+
+        self.lirr_item = LirrItem()
+        self.lirr_item.pos = (20, 450)
+        self.add_item(self.lirr_item)
+
+        self.temp_item = TempItem()
+        self.temp_item.pos = (700, 20)
+        self.add_item(self.temp_item)
+
+
+
+
+
+
 
         # Weather
 
@@ -94,12 +108,6 @@ class ClockScreen(Screen):
         # self.weather = TextLayer(self.sm_font, self.outside_color, self._weather)
         # self.weather.padding = (10, 5, 0, 0)
         # self.weather.top_items = [self.time_text, self.date_text, self.weather_icon]
-
-        # MTA Status
-        # self.port_jeff = TextLayer(self.sm_font, "#0039a6", self._service_status)
-        # self.port_jeff.padding = (5, 15, 0, 0)
-        # self.port_jeff.top_items = [self.time_text, self.date_text,
-        #   self.weather_icon, self.weather]
 
         # Restart
         # self.restart = TextLayer(self.vs_font, "#FF0000", lambda: "RESTART")
@@ -171,18 +179,11 @@ class ClockScreen(Screen):
 
     #     return icon.lookup(w_str)
 
-    # def _service_status(self):
-    #     try:
-    #         s_str = self.line + ": " + self.service_status[self.line]
-    #     except ValueError:
-    #         return "NA"
-
-    #     return s_str
 
     def render(self):
 
         # Create a blank background
-        bg = Image.new("RGBA", self.device.size, "#000000")
+        bg = Image.new("RGBA", self.device.size, "#121212")
 
         for item in self._items:
             item.render(bg)
@@ -193,7 +194,6 @@ class ClockScreen(Screen):
         # self.rh.render(bg)
         # self.rh_icon.render(bg)
         # self.weather.render(bg)
-        # self.port_jeff.render(bg)
         # self.restart.render(bg)
 
         return bg
