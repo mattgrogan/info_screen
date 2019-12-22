@@ -1,5 +1,6 @@
 """ Main screen showing clock view """
 
+import os
 from PIL import Image
 
 from server.components.screens.screen import Screen
@@ -9,12 +10,7 @@ from server.components.items.time_item import TimeItem
 from server.components.items.lirr_item import LirrItem
 from server.components.items.temp_item import TempItem
 from server.components.items.title_item import TitleBar
-
-# from server.data.current_conditions import NOAA_Current_Observation, IconDecoder
-
-# STATION = "KFRG"
-# ST_INTERVAL = 60 * 10 # every 10 minutes
-
+from server.components.items.reset_item import ResetItem
 
 class ClockScreen(Screen):
     """ Main screen with clock view"""
@@ -70,6 +66,10 @@ class ClockScreen(Screen):
         self.temp_item = TempItem()
         self.temp_item.pos = (700, 20)
         self.add_item(self.temp_item)
+
+        self.reset_item = ResetItem()
+        self.reset_item.pos = (750, 460)
+        self.add_item(self.reset_item)
 
 
 
@@ -209,13 +209,7 @@ class ClockScreen(Screen):
 
             print "Touch at %i, %i" % (x, y)
 
-            for item in self._items:
-                if item.rect.collidepoint(x, y):
-                    print type(item)
-
-            # if self.port_jeff.rect.collidepoint(x, y):
-            #     print "YOU CLICKED PORT JEFF"
-            # if self.restart.rect.collidepoint(x, y):
-            #     print "YOU CLICKED RESTART"
-            #     os.system("sudo reboot")
+            if self.reset_item.rect.collidepoint(x, y):
+                print "YOU CLICKED RESTART"
+                os.system("sudo reboot")
 
