@@ -40,7 +40,7 @@ class TextLayer(ScreenLayer):
     def render(self, bg):
         
         if self.needs_render:
-            text, r = self.font.render(self.text, pygame.Color(self.color))
+            text, _ = self.font.render(self.text, pygame.Color(self.color))
         
             # Convert to PIL image for display
             img_str = pygame.image.tostring(text, "RGBA")
@@ -50,9 +50,8 @@ class TextLayer(ScreenLayer):
             self.rect = text.get_rect()
             self.needs_render = False
 
-        x, y, h, w = self.rect
-        x += self.pos[0]
-        y += self.pos[1]
+        x = self.rect.x + self.pos[0]
+        y = self.rect.y + self.pos[1]
 
         bg.paste(self.im, box=(x, y), mask=self.im)
 
