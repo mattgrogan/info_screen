@@ -84,6 +84,7 @@ class Gui(tk.Tk):
 
         self.img_label = tk.Label(self, image=self.blank_image)
         self.img_label.image = self.blank_image
+        self.img_label.bind("<Button-1>", lambda e: cmd.send_touch(e.x, e.y))
 
         self.img_label.grid(row=0, column=1, sticky=tk.E)
 
