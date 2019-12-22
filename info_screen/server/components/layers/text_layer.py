@@ -50,10 +50,10 @@ class TextLayer(ScreenLayer):
             self.rect = text.get_rect()
             self.needs_render = False
 
-        x = self.rect.x + self.pos[0]
-        y = self.rect.y + self.pos[1]
+        self.rect.x = self.pos[0]
+        self.rect.y = self.pos[1]
 
-        bg.paste(self.im, box=(x, y), mask=self.im)
+        bg.paste(self.im, box=self.rect.topleft, mask=self.im)
 
         return bg
 

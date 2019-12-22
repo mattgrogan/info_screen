@@ -1,17 +1,11 @@
-import time
-import os
+""" Main screen showing clock view """
+
 from PIL import Image
 
-from util.font_factory import FontFactory
-
 from server.components.screens.screen import Screen
-from server.components.layers.text_layer import TextLayer
-# from server.components.layers.scrolling_layer import ScrollingLayer
-# from server.components.screens.gif_screen_factory import GifScreenFactory
 
 from server.components.items.date_item import DateItem
 from server.components.items.time_item import TimeItem
-from server.components.items.ampm_item import AmpmItem
 
 # from server.data.current_conditions import NOAA_Current_Observation, IconDecoder
 # from server.data.mta_status import MTA_Status
@@ -19,7 +13,9 @@ from server.components.items.ampm_item import AmpmItem
 # STATION = "KFRG"
 # ST_INTERVAL = 60 * 10 # every 10 minutes
 
+
 class ClockScreen(Screen):
+    """ Main screen with clock view"""
 
     def __init__(self, device):
         self.init()
@@ -27,8 +23,7 @@ class ClockScreen(Screen):
         self.device = device
 
         self._items = []
-
-        # # Create a connection to the NOAA website 
+        # # Create a connection to the NOAA website
         # self.current_obs = NOAA_Current_Observation(STATION)
 
         # # Create a connection to MTA
@@ -63,14 +58,10 @@ class ClockScreen(Screen):
         self.date_text.pos = (5, 0)
 
         self.time_text = TimeItem()
-        self.time_text.pos = (5, 100)
-
-        self.am_pm = AmpmItem()
-        self.am_pm.pos = (5, 40)
+        self.time_text.pos = (5, 60)
 
         self.add_item(self.date_text)
         self.add_item(self.time_text)
-        self.add_item(self.am_pm)
 
         # Weather
 
@@ -107,14 +98,17 @@ class ClockScreen(Screen):
         # MTA Status
         # self.port_jeff = TextLayer(self.sm_font, "#0039a6", self._service_status)
         # self.port_jeff.padding = (5, 15, 0, 0)
-        # self.port_jeff.top_items = [self.time_text, self.date_text, self.weather_icon, self.weather]
+        # self.port_jeff.top_items = [self.time_text, self.date_text,
+        #   self.weather_icon, self.weather]
 
         # Restart
         # self.restart = TextLayer(self.vs_font, "#FF0000", lambda: "RESTART")
         # self.restart.padding = (10, 10, 10, 10)
-        # self.restart.top_items = [self.time_text, self.date_text, self.weather_icon, self.weather, self.port_jeff]
+        # self.restart.top_items = [self.time_text, self.date_text,
+        #   self.weather_icon, self.weather, self.port_jeff]
 
     def add_item(self, item):
+        """ Add an item to the list of items """
         self._items.append(item)
 
     def enter(self):
@@ -133,7 +127,6 @@ class ClockScreen(Screen):
 
         for item in self._items:
             item.step()
-
 
         # self.weather_icon.step()
         # self.temp.step()
@@ -166,7 +159,7 @@ class ClockScreen(Screen):
     #     except ValueError:
     #         w_str = "NA"
 
-    #     return w_str  
+    #     return w_str
 
     # def _weather_icon(self):
     #     try:
@@ -184,16 +177,15 @@ class ClockScreen(Screen):
     #     except ValueError:
     #         return "NA"
 
-    #     return s_str          
+    #     return s_str
 
     def render(self):
-        
+
         # Create a blank background
         bg = Image.new("RGBA", self.device.size, "#000000")
 
         for item in self._items:
             item.render(bg)
-
 
         # self.weather_icon.render(bg)
         # self.temp.render(bg)
@@ -226,4 +218,4 @@ class ClockScreen(Screen):
             # if self.restart.rect.collidepoint(x, y):
             #     print "YOU CLICKED RESTART"
             #     os.system("sudo reboot")
-   
+
