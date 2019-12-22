@@ -9,6 +9,8 @@ from server.components.layers.text_layer import TextLayer
 from server.components.layers.scrolling_layer import ScrollingLayer
 from server.components.screens.gif_screen_factory import GifScreenFactory
 
+from server.components.items.date import DateItem
+
 from server.data.current_conditions import NOAA_Current_Observation, IconDecoder
 from server.data.mta_status import MTA_Status
 
@@ -53,7 +55,7 @@ class ClockScreen(Screen):
 
         # Time and Date
 
-        self.date_text = TextLayer(self.md_font, self.time_color, lambda: time.strftime("%A, %B ") + time.strftime("%d").lstrip("0"))
+        self.date_text = DateItem()
         self.date_text.padding = (10, 5, 0, 0)
         
         self.time_text = TextLayer(self.el_font, self.time_color, lambda: time.strftime("%I:%M", time.localtime()).lstrip("0"))
