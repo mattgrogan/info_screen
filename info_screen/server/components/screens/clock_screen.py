@@ -13,6 +13,7 @@ from server.components.items.title_item import TitleBar
 from server.components.items.reset_item import ResetItem
 from server.components.items.sunrise import SunriseItem
 from server.components.items.sunset import SunsetItem
+from server.components.items.forecast import Forecast
 
 class ClockScreen(Screen):
     """ Main screen with clock view"""
@@ -55,6 +56,10 @@ class ClockScreen(Screen):
         self.sunset_item = SunsetItem()
         self.sunset_item.pos = (550, 430)
         self.add_item(self.sunset_item)
+
+        self.forecast = Forecast()
+        self.forecast.pos = (5, 250)
+        self.add_item(self.forecast)
 
     def add_item(self, item):
         """ Add an item to the list of items """
