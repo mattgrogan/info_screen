@@ -11,6 +11,7 @@ from server.components.items.lirr_item import LirrItem
 from server.components.items.temp_item import TempItem
 from server.components.items.title_item import TitleBar
 from server.components.items.reset_item import ResetItem
+from server.components.items.sunrise import SunriseItem
 
 class ClockScreen(Screen):
     """ Main screen with clock view"""
@@ -45,6 +46,10 @@ class ClockScreen(Screen):
         self.reset_item = ResetItem()
         self.reset_item.pos = (750, 460)
         self.add_item(self.reset_item)
+
+        self.sunrise_item = SunriseItem()
+        self.sunrise_item.pos = (400, 430)
+        self.add_item(self.sunrise_item)
 
     def add_item(self, item):
         """ Add an item to the list of items """
