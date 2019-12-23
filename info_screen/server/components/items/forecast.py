@@ -28,7 +28,7 @@ class Forecast(ScreenLayer):
         for i in range(10):
 
             self.labels.append(TextLayer(lblfont, "#bbdefb", 
-                lambda i=i: self.forecast[i]["startPeriodName"]))
+                lambda i=i: self.forecast[i][u"startPeriodName"]))
 
             self.weathers.append(TextLayer(font, color, 
                 lambda i=i: self.forecast[i][u"weather"]))
