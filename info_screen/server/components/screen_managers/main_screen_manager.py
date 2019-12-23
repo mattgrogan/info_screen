@@ -3,11 +3,8 @@ from PIL import Image
 
 from server.components.screen_managers.screen_manager import ScreenManager
 
-from server.components.screens.gif_screen_factory import GifScreenFactory
-from server.components.screens.info_screen import InfoScreen
 from server.components.screens.clock_screen import ClockScreen
-from server.components.screens.snake import SnakeScreen
-from server.components.screens.menu_screen import MenuScreen
+from server.components.screens.weather_screen import WeatherScreen
 
 class MainScreenManager(ScreenManager):
 
@@ -16,11 +13,8 @@ class MainScreenManager(ScreenManager):
         self.device = device
         self.screens = collections.deque()
 
-        #self.add_screen(InfoScreen(device=device))
-        #self.add_screen(MenuScreen(device=device))
-        #self.add_screen(SnakeScreen(device=device))
         self.add_screen(ClockScreen(device=device))
-        #self.add_screen(GifScreenFactory().from_folder("icons/gifs/"))
+        self.add_screen(WeatherScreen(device=device))
 
     def add_screen(self, screen):
         self.screens.append(screen)
@@ -45,8 +39,7 @@ class MainScreenManager(ScreenManager):
         if cmd == "KEY_MODE":
             self.next()
         elif cmd is not None:
-            for screen in self.screens:
-                screen.handle_input(cmd)
+            self.current_screen.handle_input(cmd)
 
     def step(self):
         """ Allow each screen to run logic """
