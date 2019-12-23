@@ -60,7 +60,7 @@ class ClockScreen(Screen):
         self.add_item(self.time_text)
 
         self.lirr_item = LirrItem()
-        self.lirr_item.pos = (20, 450)
+        self.lirr_item.pos = (5, 430)
         self.add_item(self.lirr_item)
 
         self.temp_item = TempItem()
