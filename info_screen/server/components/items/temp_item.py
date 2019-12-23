@@ -3,7 +3,7 @@
 from server.components.layers.text_layer import TextLayer
 from util.font_factory import FontFactory
 
-from server.data.current_conditions import NOAA_Current_Observation, IconDecoder
+from server.data.current_conditions import NOAA_Current_Observation
 STATION = "KFRG"
 ST_INTERVAL = 60 * 5 # every 5 minutes
 
@@ -46,7 +46,7 @@ class TempItem(TextLayer):
 class TempIcon(TextLayer):
     """ Show a degrees ()F symbol """
     def __init__(self):
-        self.font = FontFactory().by_name( "weathericons-regular-webfont", 32)
+        self.font = FontFactory().by_name("weathericons-regular-webfont", 32)
         self.color = "#FFFFFF"
         self.callback = lambda: u"\uF045"
 

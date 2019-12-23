@@ -31,7 +31,7 @@ class TimeItem(TextLayer):
 class AmpmItem(TextLayer):
     """Show AM or PM"""
     def __init__(self):
-        self.font = FontFactory().by_name( "OpenSans-Regular", 48)
+        self.font = FontFactory().by_name("OpenSans-Regular", 48)
         self.color = "#FFFFFF"
         self.callback = lambda: time.strftime("%p", time.localtime())
         super(AmpmItem, self).__init__(self.font, self.color, self.callback)

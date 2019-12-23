@@ -1,7 +1,7 @@
 import pygame, pygame.freetype
 
 class FontFactory(object):
-    
+
     def __init__(self):
         pygame.freetype.init()
 
