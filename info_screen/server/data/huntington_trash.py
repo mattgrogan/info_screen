@@ -15,7 +15,7 @@ class TrashDay(object):
 
         self._data = {}
 
-        with open('huntington_calendar.xml') as fd:
+        with open('./server/data/huntington_calendar.xml') as fd:
             doc = xmltodict.parse(fd.read())
 
             events = doc["icalendar"]["vcalendar"]["components"]["vevent"]
