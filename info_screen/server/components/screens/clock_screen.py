@@ -14,6 +14,7 @@ from server.components.items.reset_item import ResetItem
 from server.components.items.sunrise import SunriseItem
 from server.components.items.sunset import SunsetItem
 from server.components.items.forecast import Forecast
+from server.components.items.trash_item import TrashItem
 
 class ClockScreen(Screen):
     """ Main screen with clock view"""
@@ -58,8 +59,12 @@ class ClockScreen(Screen):
         self.add_item(self.sunset_item)
 
         self.forecast = Forecast()
-        self.forecast.pos = (520, 100)
+        self.forecast.pos = (520, 75)
         self.add_item(self.forecast)
+
+        self.trash_item = TrashItem()
+        self.trash_item.pos = (10, 400)
+        self.add_item(self.trash_item)
 
     def add_item(self, item):
         """ Add an item to the list of items """

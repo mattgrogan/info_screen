@@ -65,7 +65,9 @@ class Sunrise(TextLayer):
             s = self.sun["sunrise"].strftime("%I:%M %p").lstrip("0")
         except ValueError:
             return "NA"
-        
+        except AttributeError:
+            return "NA"
+                    
         return s
 
 
