@@ -58,7 +58,7 @@ class ClockScreen(Screen):
         self.add_item(self.sunset_item)
 
         self.forecast = Forecast()
-        self.forecast.pos = (5, 250)
+        self.forecast.pos = (520, 100)
         self.add_item(self.forecast)
 
     def add_item(self, item):

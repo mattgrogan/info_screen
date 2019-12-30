@@ -1,4 +1,5 @@
 """ Show NOAA Forecast """
+from PIL import ImageDraw
 
 from server.components.layers.screen_layer import ScreenLayer
 from server.components.layers.text_layer import TextLayer
@@ -16,19 +17,18 @@ class Forecast(ScreenLayer):
 
         super(Forecast, self).__init__()
 
-        lblfont = FontFactory().by_name("OpenSans-Regular", 14)
-        lblfont.wide = True
-        font = FontFactory().by_name("OpenSans-Regular", 12)
+        lblfont = FontFactory().by_name("OpenSans-Regular", 16)
+        font = FontFactory().by_name("OpenSans-Regular", 14)
         color = "#FFFFFF"
 
         self.labels = []
         self.weathers = []
         self.temps = []
 
-        for i in range(10):
+        for i in range(5):
 
-            self.labels.append(TextLayer(lblfont, "#bbdefb", 
-                lambda i=i: self.forecast[i][u"startPeriodName"]))
+            self.labels.append(TextLayer(lblfont, "#000000", 
+                lambda i=i: self.forecast[i][u"startPeriodName"].upper()))
 
             self.weathers.append(TextLayer(font, color, 
                 lambda i=i: self.forecast[i][u"weather"]))
@@ -62,20 +62,29 @@ class Forecast(ScreenLayer):
         if not self.orig_pos:
             self.orig_pos = self.pos
 
+        row_offset = 60
+        row_height = 20
+        indent = 10
+
         for i in range(len(self.labels)):
-            row = int(i / 5) * 80
-            col = i % 5 * 160
+    
+            row = i * row_offset
 
             x, y = self.orig_pos
-            self.labels[i].pos = (x + col, y + row)
+
+            # Draw a background
+            draw = ImageDraw.Draw(bg)
+            draw.rectangle([x - 10, y + row - 4, 800, y + row + row_height - 5], fill="#63a4ff")
+
+            self.labels[i].pos = (x, y + row)
             self.labels[i].render(bg)
 
             x, y = self.orig_pos
 
-            self.weathers[i].pos = (x + col + 10, y + row + 20)
+            self.weathers[i].pos = (x + indent, y + row + row_height)
             self.weathers[i].render(bg)
 
             x, y = self.orig_pos
 
-            self.temps[i].pos = (x + col + 10, y + row + 40)
+            self.temps[i].pos = (x + indent, y + row + row_height * 2)
             self.temps[i].render(bg)
