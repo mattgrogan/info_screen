@@ -36,7 +36,10 @@ class TrashDay(object):
                         self[dt] = summary
 
     def __getitem__(self, key):
-        return self._data[key]
+        if key in self._data:
+            return self._data[key]
+        else:
+            return ""
 
     def __setitem__(self, key, val):
         # Ensure the value is a list
